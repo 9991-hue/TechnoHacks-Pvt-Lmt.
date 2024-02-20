@@ -1,0 +1,92 @@
+#task-3.html
+-------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <link rel="stylesheet" href="sty.css">
+</head>
+<body>
+    <h1 id="countdown-timer">2:00</h1>
+    <button id="start-btn">Start</button>
+    <button id="stop-btn">Stop</button>
+    <button id="reset-btn">Reset</button>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
+-----------------------------
+#sty.css
+-------------------------
+body {
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 200px;
+  }
+  button {
+    background-color: #0a9ed4;
+    border: none;
+    color: rgb(12, 9, 9);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #b926ab;
+  }
+  #countdown-timer {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+----------------------------
+#app.js
+------------------------------
+const countdownTimer = document.getElementById('countdown-timer');
+const startBtn = document.getElementById('start-btn');
+const stopBtn = document.getElementById('stop-btn');
+const resetBtn = document.getElementById('reset-btn');
+
+let timeLeft = 120; // 2 minutes in seconds
+let timerInterval;
+
+function updateTimer() {
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
+  countdownTimer.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+  if (timeLeft === 0) {
+    clearInterval(timerInterval);
+    countdownTimer.textContent = 'Time is up!';
+  }
+
+  timeLeft--;
+}
+
+startBtn.addEventListener('click', () => {
+  if (!timerInterval) {
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+});
+
+stopBtn.addEventListener('click', () => {
+  clearInterval(timerInterval);
+  timerInterval = null;
+});
+
+resetBtn.addEventListener('click', () => {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timeLeft = 120;
+  updateTimer();
+});
