@@ -1,0 +1,124 @@
+#task-2.html
+----------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Currency Converter</h1>
+        <form action="#">
+            <input type="number" id="amount" placeholder="Enter amount" required>
+            <select id="from-currency">
+                <option value="USD">USD - United States Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="INR">INR - Indian Rupee</option>
+                <option value="CAD">CAD - Canada Dollar</option>
+                <option value="JPY">JPY - Japan Yen</option>
+                <option value="KRW">KRW - Korea (South) Won</option>
+                <option value="CNY">CNY - China Yuan Renminbi</option>
+            </select>
+            <button type="button" id="convert-btn">Convert</button>
+            <select id="to-currency">
+                <option value="USD">USD - United States Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="INR">INR - Indian Rupee</option>
+                <option value="CAD">CAD - Canada Dollar</option>
+                <option value="JPY">JPY - Japan Yen</option>
+                <option value="KRW">KRW - Korea (South) Won</option>
+                <option value="CNY">CNY - China Yuan Renminbi</option>
+            </select>
+            <p id="result"></p>
+        </form>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
+--------------------------
+#styles.css
+-------------------
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #46879d;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    background-color: #b7b422;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(3, 1, 1, 0.1);
+    padding: 30px;
+    width: 400px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #070101;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #850761;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #053fa1;
+}
+
+p {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+-------------------
+#scripts.js
+-----------------
+document.getElementById('convert-btn').addEventListener('click', function() {
+    var amount = document.getElementById('amount').value;
+    var fromCurrency = document.getElementById('from-currency').value;
+    var toCurrency = document.getElementById('to-currency').value;
+
+    if (amount && fromCurrency && toCurrency) {
+        fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`)
+            .then(response => response.json())
+            .then(data => {
+                var conversionRate = data.rates[toCurrency];
+                var result = (amount * conversionRate).toFixed(2);
+                document.getElementById('result').innerText = `Result: ${result} ${toCurrency}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    } else {
+        alert('Please enter a valid amount and select both currencies.');
+    }
+});
